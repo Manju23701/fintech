@@ -1,0 +1,26 @@
+{
+  "name": "fintech",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manju23701/fintech.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manju23701/fintech/issues"
+  },
+  "homepage": "https://github.com/Manju23701/fintech#readme",
+  "description": "",
+  "dependencies": {
+    "appium": "^2.16.2"
+  },
+  "devDependencies": {
+    "mocha": "^11.1.0"
+  }
+}
