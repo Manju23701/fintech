@@ -15,16 +15,16 @@ class applyloanclass():
         self.driver = driver
 
     def applyloan(self):
-        # self.driver.find_element(By.XPATH,skip).click()
+        self.driver.find_element(By.XPATH,skip).click()
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, done).click()
+        time.sleep(2)
+        # self.driver.find_element(By.XPATH,reg).click()
         # time.sleep(2)
-        # self.driver.find_element(By.XPATH, done).click()
+        # self.driver.find_element(By.XPATH,mobile).click()
         # time.sleep(2)
-        self.driver.find_element(By.XPATH,reg).click()
-        time.sleep(2)
-        self.driver.find_element(By.XPATH,mobile).click()
-        time.sleep(2)
-        self.driver.find_element(By.XPATH, mobile).send_keys("9000000000")
-        time.sleep(2)
+        # self.driver.find_element(By.XPATH, mobile).send_keys("9000000000")
+        # time.sleep(2)
 
         # self.driver.find_element(By.XPATH, continue_btn).click()
         # time.sleep(2)
