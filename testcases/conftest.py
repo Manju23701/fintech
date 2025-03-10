@@ -44,42 +44,43 @@
 #             screenshot_file = f"{item.name}.png"
 #             driver.save_screenshot(screenshot_file)'''
 import pytest
-from appium import webdriver
 import random
-SLAVES = [
-    "http://192.168.1.58:4723/wd/hub",  # Slave 1
-    "http://192.168.1.49:4723/wd/hub",  # Slave 2
+from appium import webdriver
 
+# List of Slave Machines (Appium Nodes) and their respective APK paths
+SLAVES = [
+    {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"},
+    {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
 ]
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="class", params=SLAVES)
 def setup(request):
-    # Randomly select one of the available Slave nodes
-    slave_url = random.choice(SLAVES)
-    print(f"Running test on {slave_url}")
+    # Assign a Slave to each test case
+    selected_slave = request.param
+    slave_url = f"http://{selected_slave['ip']}:4723/wd/hub"
+    apk_path = selected_slave["apk"]
 
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+    print(f"Running test on {slave_url} using APK: {apk_path}")
 
-@pytest.fixture(scope="class")
-def setup(request):
-    grid_url = "http://192.168.1.56:4444/wd/hub"  # Selenium Grid Hub URL
-
+    # Define desired capabilities dynamically
     desired_caps = {
         "platformName": "Android",
         "appium:deviceName": "Android Emulator",
         "appium:automationName": "UiAutomator2",
         "appium:platformVersion": "12.0",
-        "appium:app": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk",  # Ensure correct path
+        "appium:app": apk_path,  # Dynamic APK path
         "appium:noReset": True
     }
 
-    # FIX: Use `webdriver.Remote()` with `desired_capabilities` directly
-    driver = webdriver.Remote(command_executor=grid_url, desired_capabilities=desired_caps)
+    # Initialize WebDriver with dynamically assigned Slave and APK path
+    driver = webdriver.Remote(command_executor=slave_url, desired_capabilities=desired_caps)
     driver.implicitly_wait(10)
 
     request.cls.driver = driver
     yield driver
     driver.quit()
+
+
 
 
 
