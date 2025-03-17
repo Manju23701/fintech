@@ -30,86 +30,86 @@
 #
 #     # Teardown: quit the driver after tests complete.
 #     driver.quit()
+# #
+# # # Hook to capture screenshots on test failure.
+# # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
+# # def pytest_runtest_makereport(item, call):
+# #     outcome = yield
+# #     report = outcome.get_result()
+# #
+# #     # Capture screenshot only for failures during the call phase.
+# #     if report.when == "call" and report.failed:
+# #         driver = item.funcargs.get("setup", None)
+# #         if driver is not None:
+# #             screenshot_file = f"{item.name}.png"
+# #             driver.save_screenshot(screenshot_file)'''
+# import pytest
+# import random
+# from appium import webdriver
 #
-# # Hook to capture screenshots on test failure.
-# @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-# def pytest_runtest_makereport(item, call):
-#     outcome = yield
-#     report = outcome.get_result()
+# # List of Slave Machines (Appium Nodes) and their respective APK paths
+# SLAVES = [
+#     {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"}
+#     # {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
+# ]
 #
-#     # Capture screenshot only for failures during the call phase.
-#     if report.when == "call" and report.failed:
-#         driver = item.funcargs.get("setup", None)
-#         if driver is not None:
-#             screenshot_file = f"{item.name}.png"
-#             driver.save_screenshot(screenshot_file)'''
+# @pytest.fixture(scope="class", params=SLAVES)
+# def setup(request):
+#     # Assign a Slave to each test case
+#     selected_slave = request.param
+#     slave_url = f"http://{selected_slave['ip']}:4723/wd/hub"
+#     apk_path = selected_slave["apk"]
+#
+#     print(f"Running test on {slave_url} using APK: {apk_path}")
+#
+#     # Define desired capabilities dynamically
+#     desired_caps = {
+#         "platformName": "Android",
+#         "appium:deviceName": "Android Emulator",
+#         "appium:automationName": "UiAutomator2",
+#         "appium:platformVersion": "12.0",
+#         "appium:app": apk_path,  # Dynamic APK path
+#         "appium:noReset": True
+#     }
+#
+#     # Initialize WebDriver with dynamically assigned Slave and APK path
+#     driver = webdriver.Remote(command_executor=slave_url, desired_capabilities=desired_caps)
+#     driver.implicitly_wait(10)
+#
+#     request.cls.driver = driver
+#     yield driver
+#     driver.quit()
+#
+#
+
+
+
+
+
 import pytest
-import random
 from appium import webdriver
+import os
 
-# List of Slave Machines (Appium Nodes) and their respective APK paths
-SLAVES = [
-    {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"}
-    # {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
-]
+path = os.getcwd()
 
-@pytest.fixture(scope="class", params=SLAVES)
+
+@pytest.fixture(scope='class')
 def setup(request):
-    # Assign a Slave to each test case
-    selected_slave = request.param
-    slave_url = f"http://{selected_slave['ip']}:4723/wd/hub"
-    apk_path = selected_slave["apk"]
-
-    print(f"Running test on {slave_url} using APK: {apk_path}")
-
-    # Define desired capabilities dynamically
-    desired_caps = {
+    desired_capabilities = {
         "platformName": "Android",
-        "appium:deviceName": "Android Emulator",
-        "appium:automationName": "UiAutomator2",
-        "appium:platformVersion": "12.0",
-        "appium:app": apk_path,  # Dynamic APK path
-        "appium:noReset": True
+        "deviceName": "Android Emulator",  # corrected typo
+        "app": r"C:\Users\ManjulaAlagarsamy\Downloads\hrportal.apk",
+        "noReset": True,  # use Boolean values
+        "fullReset": False
     }
 
-    # Initialize WebDriver with dynamically assigned Slave and APK path
-    driver = webdriver.Remote(command_executor=slave_url, desired_capabilities=desired_caps)
-    driver.implicitly_wait(10)
+    driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_capabilities)
+    driver.implicitly_wait(80)
 
     request.cls.driver = driver
-    yield driver
-    driver.quit()
-#
-#
 
+    print('The Request is Accepted')
 
+    yield driver  # Provide the driver instance to tests
 
-
-
-# import pytest
-# from appium import webdriver
-# import os
-# 
-# path = os.getcwd()
-# 
-# 
-# @pytest.fixture(scope='class')
-# def setup(request):
-#     desired_capabilities = {
-#         "platformName": "Android",
-#         "deviceName": "Android Emulator",  # corrected typo
-#         "app": "C:\\Users\\ManjulaAlagarsamy\\Downloads\\hrportal.apk",
-#         "noReset": True,  # use Boolean values
-#         "fullReset": False
-#     }
-# 
-#     driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_capabilities)
-#     driver.implicitly_wait(80)
-# 
-#     request.cls.driver = driver
-# 
-#     print('The Request is Accepted')
-# 
-#     yield driver  # Provide the driver instance to tests
-# 
-#     driver.quit()  # Clean up after tests are finished
+    driver.quit()  # Clean up after tests are finished
