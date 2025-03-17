@@ -16,7 +16,7 @@ attention=f"{package}attention"
 confirmcheckin=f"{package}conform_checkin_button"
 burger_menu='//android.widget.ImageButton[@content-desc="Open navigation drawer"]'
 logout='//android.widget.CheckedTextView[@resource-id="com.smiligence.smiligencehrportal:id/design_menu_item_text" and @text="Logout"]'
-
+logout_yes=f"{package}logout"
 class checkinclass():
 
     def __init__(self,driver):
@@ -46,4 +46,6 @@ class checkinclass():
         self.driver.find_element(By.XPATH, burger_menu).click()
         time.sleep(3)
         self.driver.find_element(By.XPATH, logout).click()
+        time.sleep(3)
+        self.driver.find_element(By.XPATH, logout_yes).click()
         time.sleep(3)
