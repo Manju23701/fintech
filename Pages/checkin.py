@@ -1,7 +1,7 @@
 import time
 
 from selenium.webdriver.common.by import By
-
+from selenium.common.exceptions import NoSuchElementException
 package="com.smiligence.smiligencehrportal:id/"
 allow="com.android.permissioncontroller:id/permission_allow_button"
 checkin_btn=f"{package}checkin_Button"
@@ -23,8 +23,11 @@ class checkinclass():
         self.driver = driver
 
     def checkin(self):
-        self.driver.find_element(By.ID, allow).click()
-        time.sleep(4)
+        try:
+            self.driver.find_element(By.ID, allow).click()
+            time.sleep(2)
+        except NoSuchElementException:
+            print("Allow button not found, skipping...")
         self.driver.find_element(By.ID,checkin_btn).click()
         time.sleep(4)
         self.driver.find_element(By.ID, camera).click()
@@ -33,8 +36,14 @@ class checkinclass():
         time.sleep(4)
         self.driver.find_element(By.ID, checkinconfirm).click()
         time.sleep(4)
-        self.driver.find_element(By.ID, allow_permission).click()
-        time.sleep(4)
+        # self.driver.find_element(By.ID, allow_permission).click()
+        # time.sleep(4)
+        # Click "Allow Foreground Only" button if it exists
+        try:
+            self.driver.find_element(By.ID, allow_permission).click()
+            time.sleep(2)
+        except NoSuchElementException:
+            print("Allow Foreground Permission not found, skipping...")
         self.driver.find_element(By.ID, checkin_next).click()
         time.sleep(3)
         self.driver.find_element(By.ID, reason_).send_keys("Yes")
