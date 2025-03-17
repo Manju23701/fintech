@@ -43,73 +43,73 @@
 #         if driver is not None:
 #             screenshot_file = f"{item.name}.png"
 #             driver.save_screenshot(screenshot_file)'''
-# import pytest
-# import random
-# from appium import webdriver
-#
-# # List of Slave Machines (Appium Nodes) and their respective APK paths
-# SLAVES = [
-#     {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"},
-#     # {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
-# ]
-#
-# @pytest.fixture(scope="class", params=SLAVES)
-# def setup(request):
-#     # Assign a Slave to each test case
-#     selected_slave = request.param
-#     slave_url = f"http://{selected_slave['ip']}:4723/wd/hub"
-#     apk_path = selected_slave["apk"]
-#
-#     print(f"Running test on {slave_url} using APK: {apk_path}")
-#
-#     # Define desired capabilities dynamically
-#     desired_caps = {
-#         "platformName": "Android",
-#         "appium:deviceName": "Android Emulator",
-#         "appium:automationName": "UiAutomator2",
-#         "appium:platformVersion": "12.0",
-#         "appium:app": apk_path,  # Dynamic APK path
-#         "appium:noReset": True
-#     }
-#
-#     # Initialize WebDriver with dynamically assigned Slave and APK path
-#     driver = webdriver.Remote(command_executor=slave_url, desired_capabilities=desired_caps)
-#     driver.implicitly_wait(10)
-#
-#     request.cls.driver = driver
-#     yield driver
-#     driver.quit()
-#
-#
-
-
-
-
-
 import pytest
+import random
 from appium import webdriver
-import os
 
-path = os.getcwd()
+# List of Slave Machines (Appium Nodes) and their respective APK paths
+SLAVES = [
+    {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"},
+    # {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
+]
 
-
-@pytest.fixture(scope='class')
+@pytest.fixture(scope="class", params=SLAVES)
 def setup(request):
-    desired_capabilities = {
+    # Assign a Slave to each test case
+    selected_slave = request.param
+    slave_url = f"http://{selected_slave['ip']}:4723/wd/hub"
+    apk_path = selected_slave["apk"]
+
+    print(f"Running test on {slave_url} using APK: {apk_path}")
+
+    # Define desired capabilities dynamically
+    desired_caps = {
         "platformName": "Android",
-        "deviceName": "Android Emulator",  # corrected typo
-        "app": "C:\\Users\\ManjulaAlagarsamy\\Downloads\\hrportal.apk",
-        "noReset": True,  # use Boolean values
-        "fullReset": False
+        "appium:deviceName": "Android Emulator",
+        "appium:automationName": "UiAutomator2",
+        "appium:platformVersion": "12.0",
+        "appium:app": apk_path,  # Dynamic APK path
+        "appium:noReset": True
     }
 
-    driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_capabilities)
-    driver.implicitly_wait(80)
+    # Initialize WebDriver with dynamically assigned Slave and APK path
+    driver = webdriver.Remote(command_executor=slave_url, desired_capabilities=desired_caps)
+    driver.implicitly_wait(10)
 
     request.cls.driver = driver
+    yield driver
+    driver.quit()
+#
+#
 
-    print('The Request is Accepted')
 
-    yield driver  # Provide the driver instance to tests
 
-    driver.quit()  # Clean up after tests are finished
+
+
+# import pytest
+# from appium import webdriver
+# import os
+# 
+# path = os.getcwd()
+# 
+# 
+# @pytest.fixture(scope='class')
+# def setup(request):
+#     desired_capabilities = {
+#         "platformName": "Android",
+#         "deviceName": "Android Emulator",  # corrected typo
+#         "app": "C:\\Users\\ManjulaAlagarsamy\\Downloads\\hrportal.apk",
+#         "noReset": True,  # use Boolean values
+#         "fullReset": False
+#     }
+# 
+#     driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_capabilities)
+#     driver.implicitly_wait(80)
+# 
+#     request.cls.driver = driver
+# 
+#     print('The Request is Accepted')
+# 
+#     yield driver  # Provide the driver instance to tests
+# 
+#     driver.quit()  # Clean up after tests are finished
