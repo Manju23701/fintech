@@ -15,11 +15,10 @@ class loginclass():
 
     def login(self,mobile,password_):
         self.driver.find_element(By.ID,phone).send_keys(mobile)
-        time.sleep(2)
+        time.sleep(4)
         self.driver.find_element(By.ID, password).send_keys(password_)
-        time.sleep(2)
-        self.driver.back()
-        time.sleep(3)
+        time.sleep(4)
+
         self.driver.find_element(By.ID, login_btn).click()
         time.sleep(2)
 
