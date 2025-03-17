@@ -1,37 +1,34 @@
-import pygsheets
-
+import openpyxl
 import os
 
-path = os.getcwd()
-print(path)
-#client =pygsheets.authorize(service_account_file=f"{path}\\creds(3).json")
-client =pygsheets.authorize(service_account_file=f"{path}\\sheetutilities\\creds(3).json")
+# Define the path to the Excel file
+excel_file = "C:\\Users\\ManjulaAlagarsamy\\PycharmProjects\\PythonProject\\sheetutilities\\Truewaves.xlsx"
 
-spreadsheet =client.open("Truewaves")
+# Load the workbook
+workbook = openpyxl.load_workbook(excel_file)
 
 def selectsheet(sheetname):
+    """Selects the specified sheet from the Excel file."""
     global worksheet
-    worksheet =spreadsheet.worksheet("title",f"{sheetname}")
-
+    worksheet = workbook[sheetname]
 
 def rowcount():
-      a =worksheet.get_all_values(include_tailing_empty_rows=False, include_tailing_empty=False,returnas ='matrix')
+    """Returns the number of non-empty rows in the selected sheet."""
+    return worksheet.max_row
 
-      rowcount =(len(a))
-      return rowcount
+def readdata(cell):
+    """Reads data from a specific cell."""
+    return worksheet[cell].value
 
+def writedata(row, column, data):
+    """Writes data to a specific cell and saves the file."""
+    worksheet.cell(row=row, column=column, value=data)
+    workbook.save(excel_file)  # Save changes to the Excel file
 
-def readdata(row):
-    readdata =worksheet.get_value(f"{row}")
-    return readdata
+# Example usage:
+selectsheet("Sheet1")  # Select the sheet
 
+print(readdata("A1"))  # Read data from A1
+print(f"Total Rows: {rowcount()}")  # Get row count
 
-def writedata(row,column,data):
-    writedata =worksheet.cell((row,column)).value =f"{data}"
-    return  writedata
-
-
-
-#selectsheet("Sheet1")
-#a =readdata("A1")
-#print(a)
+writedata(2, 2, "Hello Excel")  # Write data to B2
