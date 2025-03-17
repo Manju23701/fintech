@@ -4,31 +4,43 @@ from Pages.base import datetime
 from Pages.register import loginclass
 from Pages.checkin import checkinclass
 from sheetutilities import sheet
+
 @pytest.mark.usefixtures("setup")
-class Test_login:
+class TestLogin:
     def test_login(self):
-        registerobj=loginclass(self.driver)
-        checkinobj = checkinclass(self.driver)
-        datetimeobject = datetime()
-        sheet.selectsheet("logins")
-        max_rowcount = int(sheet.rowcount())
-        for i in range(2, max_rowcount + 1):
-            status = sheet.readdata(f"F{i}")
-            if status != "Done":
-                registerobj.login()
-                mobile = sheet.readdata(f"B{i}")
-                password = sheet.readdata(f"C{i}")
-                registerobj.login(mobile,password)
-                checkinobj.checkin()
-            x = datetimeobject.curentdatetime()
-            li = list(x)
-            sheet.writedata(i, 4, li[0])
-            sheet.writedata(i, 5, li[1])
-            sheet.writedata(i, 6, "Done")
+        register_obj = loginclass(self.driver)
+        checkin_obj = checkinclass(self.driver)
+        datetime_obj = datetime()
 
+        # Select the "logins" sheet
+        sheet.selectsheet("Sheet1")
+        max_row_count = int(sheet.rowcount())
 
+        for i in range(5, max_row_count + 1):
+            try:
+                status = sheet.readdata(f"F{i}")
 
+                if status != "Done":  # Process only if status is not "Done"
+                    mobile = sheet.readdata(f"B{i}")
+                    password = sheet.readdata(f"C{i}")
 
+                    print(f"Attempting login for user: {mobile}")
 
+                    register_obj.login(mobile, password)
+                    checkin_obj.checkin()
 
+                    # Fetch current date & time
+                    current_date, current_time = datetime_obj.curentdatetime()
+
+                    # Write back results
+                    sheet.writedata(i, 4, current_date)
+                    sheet.writedata(i, 5, current_time)
+                    sheet.writedata(i, 6, "Done")
+
+                    print(f"Login & check-in completed for user: {mobile}")
+                else:
+                    print(f"Skipping row {i}, already processed.")
+
+            except Exception as e:
+                print(f"Error processing row {i}: {e}")
 
