@@ -49,7 +49,7 @@ from appium import webdriver
 
 # List of Slave Machines (Appium Nodes) and their respective APK paths
 SLAVES = [
-    {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"},
+    {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\testing.apk"}
     # {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
 ]
 
