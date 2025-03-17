@@ -1,35 +1,35 @@
-# '''import pytest
-# from appium import webdriver
-# import os
-#
-# # Define the Selenium Grid Hub URL (update as needed)
-# GRID_HUB_URL = "http://192.168.1.58:4444/wd/hub"
-#
-# @pytest.fixture(scope="class")
-# def setup(request):
-#     # Define desired capabilities for your mobile device/emulator.
-#     desired_caps = {
-#         "platformName": "Android",                     # or "iOS" for iOS devices
-#         "deviceName": "Android Emulator",              # update if using a real device
-#         "app": r"C:\Users\ManjulaAlagarsamy\Downloads\fin.apk",  # raw string for Windows path
-#         "automationName": "UiAutomator2",              # for iOS, consider "XCUITest"
-#         "noReset": True,                               # do not reset app state between sessions
-#         "fullReset": False                             # do not uninstall the app between sessions
-#     }
-#
-#     # Initialize the remote WebDriver pointing to your Selenium Grid Hub.
-#     driver = webdriver.Remote(GRID_HUB_URL, desired_caps)
-#     driver.implicitly_wait(80)  # Set an implicit wait (in seconds)
-#
-#     # Attach the driver to the test class so that tests can use self.driver.
-#     request.cls.driver = driver
-#
-#     print("The Request is Accepted")
-#
-#     yield driver
-#
-#     # Teardown: quit the driver after tests complete.
-#     driver.quit()
+import pytest
+from appium import webdriver
+import os
+
+# Define the Selenium Grid Hub URL (update as needed)
+GRID_HUB_URL = "http://192.168.1.58:4444/wd/hub"
+
+@pytest.fixture(scope="class")
+def setup(request):
+    # Define desired capabilities for your mobile device/emulator.
+    desired_caps = {
+        "platformName": "Android",                     # or "iOS" for iOS devices
+        "deviceName": "Android Emulator",              # update if using a real device
+        "app": r"C:\Users\ManjulaAlagarsamy\Downloads\fin.apk",  # raw string for Windows path
+        "automationName": "UiAutomator2",              # for iOS, consider "XCUITest"
+        "noReset": True,                               # do not reset app state between sessions
+        "fullReset": False                             # do not uninstall the app between sessions
+    }
+
+    # Initialize the remote WebDriver pointing to your Selenium Grid Hub.
+    driver = webdriver.Remote(GRID_HUB_URL, desired_caps)
+    driver.implicitly_wait(80)  # Set an implicit wait (in seconds)
+
+    # Attach the driver to the test class so that tests can use self.driver.
+    request.cls.driver = driver
+
+    print("The Request is Accepted")
+
+    yield driver
+
+    # Teardown: quit the driver after tests complete.
+    driver.quit()
 # #
 # # # Hook to capture screenshots on test failure.
 # # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -85,31 +85,44 @@
 
 
 
-
-import pytest
-from appium import webdriver
-import os
-
-path = os.getcwd()
-
-
-@pytest.fixture(scope='class')
-def setup(request):
-    desired_capabilities = {
-        "platformName": "Android",
-        "deviceName": "Android Emulator",  # corrected typo
-        "app": r"C:\Users\ManjulaAlagarsamy\Downloads\hrportal.apk",
-        "noReset": True,  # use Boolean values
-        "fullReset": False
-    }
-
-    driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_capabilities)
-    driver.implicitly_wait(80)
-
-    request.cls.driver = driver
-
-    print('The Request is Accepted')
-
-    yield driver  # Provide the driver instance to tests
-
-    driver.quit()  # Clean up after tests are finished
+# 
+# import pytest
+# from appium import webdriver
+# import os
+# 
+# path = os.getcwd()
+# 
+# 
+# @pytest.fixture(scope='class')
+# def setup(request):
+#     desired_capabilities = {
+#         "platformName": "Android",
+# <<<<<<< HEAD
+#         "deviceName": "Android Emulator",  # corrected typo
+#         "app": r"C:\Users\ManjulaAlagarsamy\Downloads\hrportal.apk",
+#         "noReset": True,  # use Boolean values
+#         "fullReset": False
+# =======
+#         "deviceName": "Android Emulator",  # Use `adb devices` to check your emulator name
+#         "app": r"C:\Users\ManjulaAlagarsamy\Downloads\hrportal.apk",
+#         "appPackage": "com.smiligence.smiligencehrportal",  # Update with actual package name
+#         "appActivity": "com.smiligence.demohrportal.SplashActivity",  # Update with actual activity
+#         "noReset": True,
+#         "fullReset": False,
+#         "autoGrantPermissions": True,  # Ensures all permissions are granted
+#         "appWaitActivity": "com.smiligence.demohrportal.*",  # Wait for app activity
+#         "appWaitDuration": 30000,  # 30 seconds to wait for the app to start
+#         "uiautomator2ServerInstallTimeout": 60000,  # 60 seconds timeout for UIAutomator2
+# >>>>>>> 7515801 (excel change)
+#     }
+# 
+#     driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_capabilities)
+#     driver.implicitly_wait(80)
+# 
+#     request.cls.driver = driver
+# 
+#     print('The Request is Accepted')
+# 
+#     yield driver  # Provide the driver instance to tests
+# 
+#     driver.quit()  # Clean up after tests are finished
