@@ -29,6 +29,8 @@ def setup(request):
     options.app_wait_activity = "com.smiligence.demohrportal.*"  # Wildcard wait for app activity
     options.new_command_timeout = 300  # Increase timeout for stability
 
+    driver = None  # Ensure driver is always defined
+
     try:
         # Initialize WebDriver using updated method
         driver = webdriver.Remote(command_executor=slave_url, options=options)
@@ -41,4 +43,6 @@ def setup(request):
         pytest.fail("Appium WebDriver failed to start.")
 
     finally:
-        driver.quit()
+        if driver:  # Prevent UnboundLocalError
+            driver.quit()
+
