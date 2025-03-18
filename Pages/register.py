@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class LoginClass:
+class loginClass:
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 15)  # Explicit wait for elements
