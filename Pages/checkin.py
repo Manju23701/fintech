@@ -40,12 +40,13 @@ class checkinclass():
         # time.sleep(4)
         # Click "Allow Foreground Only" button if it exists
         try:
-            self.driver.find_element(By.ID, allow_permission).click()
-            time.sleep(2)
+            if self.driver.find_element(By.ID, allow_permission):  # Check if the button exists
+                self.driver.find_element(By.ID, allow_permission).click()
+                time.sleep(2)
+                self.driver.find_element(By.ID, checkin_next).click()  # Click next only if permission was granted
+                time.sleep(3)
         except NoSuchElementException:
             print("Allow Foreground Permission not found, skipping...")
-        self.driver.find_element(By.ID, checkin_next).click()
-        time.sleep(3)
         self.driver.find_element(By.ID, reason_).send_keys("Yes")
         time.sleep(3)
         # self.driver.find_element(By.ID, attention).send_keys("Yes")
@@ -57,4 +58,4 @@ class checkinclass():
         self.driver.find_element(By.XPATH, logout).click()
         time.sleep(3)
         self.driver.find_element(By.ID, logout_yes).click()
-        time.sleep(3)
+
