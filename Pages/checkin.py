@@ -56,5 +56,5 @@ class checkinclass():
         time.sleep(3)
         self.driver.find_element(By.XPATH, logout).click()
         time.sleep(3)
-        self.driver.find_element(By.XPATH, logout_yes).click()
+        self.driver.find_element(By.ID, logout_yes).click()
         time.sleep(3)
