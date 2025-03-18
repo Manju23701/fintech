@@ -1,49 +1,35 @@
-import time
-
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-package="com.smiligence.smiligencehrportal:id/"
-
-phone=f"{package}edt_phoneNumber"
-password=f"{package}edt_password"
-login_btn=f"{package}otpVerificationButton"
-allow=f"{package}permission_allow_button"
-class loginclass():
-
-    def __init__(self,driver):
+class LoginClass:
+    def __init__(self, driver):
         self.driver = driver
+        self.wait = WebDriverWait(driver, 15)  # Explicit wait for elements
 
-    def login(self,mobile,password_):
-        self.driver.find_element(By.ID,phone).send_keys(mobile)
-        time.sleep(4)
-        self.driver.find_element(By.ID, password).send_keys(password_)
-        time.sleep(4)
+        # Define element locators
+        package = "com.smiligence.smiligencehrportal:id/"
+        self.phone = (By.ID, f"{package}edt_phoneNumber")
+        self.password = (By.ID, f"{package}edt_password")
+        self.login_btn = (By.ID, f"{package}otpVerificationButton")
+        self.allow_btn = (By.ID, f"{package}permission_allow_button")  # If needed
 
-        self.driver.find_element(By.ID, login_btn).click()
-        time.sleep(2)
+    def login(self, mobile, password_):
+        # Wait for phone field and enter mobile number
+        self.wait.until(EC.presence_of_element_located(self.phone)).send_keys(mobile)
 
-        # self.driver.find_element(By.XPATH, done).click()
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH,reg).click()
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH,mobile).click()
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH, mobile).send_keys("9000000000")
-        # time.sleep(2)
+        # Wait for password field and enter password
+        self.wait.until(EC.presence_of_element_located(self.password)).send_keys(password_)
 
-        # self.driver.find_element(By.XPATH, continue_btn).click()
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH, name).click()
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH, name).send_keys("Manju")
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH, mobile).click()
-        # time.sleep(2)
+        # Click on login button
+        self.wait.until(EC.element_to_be_clickable(self.login_btn)).click()
+        print("Login process completed.")
 
-        # self.driver.find_element(By.XPATH, verify).click()
-        # time.sleep(2)
-        #
-        #
-        #
+        # # If there's a permission popup, allow it (Optional)
+        # try:
+        #     allow_element = self.wait.until(EC.element_to_be_clickable(self.allow_btn))
+        #     allow_element.click()
+        # except:
+           
 
-
+        
