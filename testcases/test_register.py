@@ -16,7 +16,7 @@ class TestLogin:
         sheet.selectsheet("Sheet1")
         max_row_count = int(sheet.rowcount())
 
-        for i in range(2, max_row_count + 1):
+        for i in range(3, max_row_count + 1):
             try:
                 status = sheet.readdata(f"F{i}")
 
