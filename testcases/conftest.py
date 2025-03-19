@@ -1,38 +1,48 @@
 import pytest
-import random
 from appium import webdriver
 
-# List of Slave Machines (Appium Nodes) and their respective APK paths
-SLAVES = [
-    {"ip": "192.168.1.58", "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\hrportal.apk"}
-    # {"ip": "192.168.1.49", "apk": "C:\\Users\\silam\\Downloads\\apk_files\\testing.apk"}
-]
+# Define configurations for master and slave machines
+CONFIG = {
+    "master": {
+        "ip": "192.168.1.10",  # Master machine IP
+        "apk": "C:\\Users\\Master\\Downloads\\apk_files\\master_app.apk"
+    },
+    "slave": {
+        "ip": "192.168.1.58",  # Slave machine IP
+        "apk": "C:\\Users\\Raja\\Downloads\\apk_files\\hrportal.apk"
+    }
+}
 
-@pytest.fixture(scope="class", params=SLAVES)
+def pytest_addoption(parser):
+    """Add command-line option to select execution mode (master or slave)."""
+    parser.addoption("--device", action="store", choices=["master", "slave"], help="Choose 'master' or 'slave'")
+
+@pytest.fixture(scope="class")
 def setup(request):
-    # Assign a Slave to each test case
-    selected_slave = request.param
-    slave_url = f"http://{selected_slave['ip']}:4723/wd/hub"
-    apk_path = selected_slave["apk"]
+    """Dynamically assigns either master or slave for parallel execution."""
+    
+    selected_device = request.config.getoption("--device")
+    selected_machine = CONFIG[selected_device]  # Get master/slave config
 
-    print(f"Running test on {slave_url} using APK: {apk_path}")
+    appium_url = f"http://{selected_machine['ip']}:4723/wd/hub"
+    apk_path = selected_machine["apk"]
 
-    # Define desired capabilities dynamically
+    print(f"Running test on {selected_device} - {appium_url} using APK: {apk_path}")
+
+    # Define Appium Desired Capabilities (Same for both Master and Slave)
     desired_caps = {
         "platformName": "Android",
-        "appium:deviceName": "Android Emulator",
+        "appium:deviceName": "Android Device",
         "appium:automationName": "UiAutomator2",
         "appium:platformVersion": "12.0",
-        "appium:app": apk_path,  # Dynamic APK path
+        "appium:app": apk_path,  # APK path assigned dynamically
         "appium:noReset": True
     }
 
-    # Initialize WebDriver with dynamically assigned Slave and APK path
-    driver = webdriver.Remote(command_executor=slave_url, desired_capabilities=desired_caps)
+    # Initialize WebDriver with the correct Appium server (master/slave)
+    driver = webdriver.Remote(command_executor=appium_url, options=webdriver.DesiredCapabilities.ANDROID)
     driver.implicitly_wait(10)
 
-    request.cls.driver = driver
+    request.cls.driver = driver  # Assign driver to test class
     yield driver
     driver.quit()
-
-
