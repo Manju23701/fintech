@@ -19,7 +19,7 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="class")
 def setup(request):
-    """Setup Appium WebDriver dynamically for parallel execution."""
+    """Setup Appium WebDriver dynamically for parallel execution (Visible UI Mode)."""
 
     selected_device = request.config.getoption("--device")
     
@@ -35,14 +35,16 @@ def setup(request):
 
     print(f"🚀 Running tests on: {selected_device} | Appium Server: {appium_url} | APK: {apk_path}")
 
-    # Define Appium Desired Capabilities
+    # Define Appium Desired Capabilities (No Headless Mode)
     desired_caps = {
         "platformName": "Android",
-        "appium:deviceName": "Android Device",
+        "appium:deviceName": "Android Emulator",  # Ensures the emulator UI is visible
         "appium:automationName": "UiAutomator2",
         "appium:platformVersion": "15",  # Adjust based on available emulator
         "appium:app": apk_path,  
-        "appium:noReset": True
+        "appium:noReset": True,
+        "appium:fullReset": False,
+        "appium:headless": False  # 🚨 Ensures emulator is NOT running in headless mode
     }
 
     try:
