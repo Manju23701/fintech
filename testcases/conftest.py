@@ -4,8 +4,8 @@ from appium import webdriver
 # Define configurations for master and slave machines
 CONFIG = {
     "master": {
-        "ip": "192.168.1.10",  # Master machine IP
-        "apk": "C:\\Users\\Master\\Downloads\\apk_files\\master_app.apk"
+        "ip": "192.168.1.55",  # Master machine IP
+        "apk": ""C:\\Users\\ManjulaAlagarsamy\\Downloads\\hrportal.apk"
     },
     "slave": {
         "ip": "192.168.1.58",  # Slave machine IP
