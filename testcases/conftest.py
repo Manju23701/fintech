@@ -5,7 +5,7 @@ from appium import webdriver
 CONFIG = {
     "master": {
         "ip": "192.168.1.55",  # Master machine IP
-        "apk": ""C:\\Users\\ManjulaAlagarsamy\\Downloads\\hrportal.apk"
+        "apk": "C:\\Users\\ManjulaAlagarsamy\\Downloads\\hrportal.apk"  # Corrected String
     },
     "slave": {
         "ip": "192.168.1.58",  # Slave machine IP
@@ -40,7 +40,7 @@ def setup(request):
     }
 
     # Initialize WebDriver with the correct Appium server (master/slave)
-    driver = webdriver.Remote(command_executor=appium_url, options=webdriver.DesiredCapabilities.ANDROID)
+    driver = webdriver.Remote(command_executor=appium_url, desired_capabilities=desired_caps)
     driver.implicitly_wait(10)
 
     request.cls.driver = driver  # Assign driver to test class
